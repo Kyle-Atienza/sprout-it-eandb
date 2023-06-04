@@ -27,6 +27,26 @@ export const getNotifications = createAsyncThunk(
   }
 );
 
+export const createNotification = createAsyncThunk(
+  "notification/create",
+  async (notificationData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().user.user.token;
+      return await notificationService.creteNotification(
+        notificationData,
+        token
+      );
+    } catch (error) {
+      const message = {
+        status: error.message,
+        response: error.response.data.message,
+      };
+
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const deleteNotification = createAsyncThunk(
   "notification/delete",
   async (payload, thunkAPI) => {
@@ -66,6 +86,19 @@ export const notificationSlice = createSlice({
         state.notifications = action.payload;
       })
       .addCase(getNotifications.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(createNotification.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createNotification.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.notifications = [...state.notifications, action.payload];
+      })
+      .addCase(createNotification.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

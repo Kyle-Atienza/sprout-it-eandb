@@ -14,9 +14,13 @@ import {
   Home,
 } from "./pages";
 import ReactLoading from "react-loading";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getNotifications } from "./features/notification/notificationSlice";
+import { useEffect } from "react";
 
 export const App = () => {
+  const dispatch = useDispatch();
+
   const { isLoading: batchLoading } = useSelector((state) => state.batch);
   const { isLoading: inventoryLoading } = useSelector(
     (state) => state.inventory
@@ -42,7 +46,7 @@ export const App = () => {
   return (
     <div className="bg-accent-100">
       {loading.some((slice) => slice === true) ? (
-        <div className="loading fixed top-0 left-0 bg-dark-400 bg-opacity-30 w-full h-full z-50 flex justify-center items-center">
+        <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full loading bg-dark-400 bg-opacity-30">
           <ReactLoading
             type={"balls"}
             color={"#fff"}

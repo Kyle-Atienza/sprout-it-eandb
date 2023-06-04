@@ -96,12 +96,27 @@ export const MaterialForm = ({ material, closeModal }) => {
         />
       </div>
       <div className="mb-4">
+        <label className="block open-button" htmlFor="item-name">
+          Price <span className="text-red-600">*</span>
+        </label>
+        <TextField
+          className="w-full open-paragraph-sm"
+          id="material-price"
+          type="text"
+          name="price"
+          defaultValue={material.price}
+          onChange={(e) => onChange(e)}
+          placeholder="Price"
+          required
+        />
+      </div>
+      <div className="mb-4">
         <label className="block open-button" htmlFor="username">
           Unit <span className="text-red-600">*</span>
         </label>
         <select
           id="material-unit"
-          className="w-full p-3 my-2 bg-light-200 rounded-lg border-1 border-light-200 open-paragrap-sm focus:ring-primary-500 focus:border-primary-400"
+          className="w-full p-3 my-2 rounded-lg bg-light-200 border-1 border-light-200 open-paragrap-sm focus:ring-primary-500 focus:border-primary-400"
           onChange={onChange}
           defaultValue={material.unit}
           name="unit"

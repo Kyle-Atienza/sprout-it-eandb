@@ -2,6 +2,12 @@ import { React, useEffect } from "react";
 import { PrimaryButton, TextField } from "../components";
 import { useDispatch, useSelector } from "react-redux";
 import { createBatch } from "../features/batch/batchSlice";
+import { createNotification } from "../features/notification/notificationSlice";
+import {
+  checkMaterialsAvailability,
+  getMaterials,
+} from "../features/inventory/inventorySlice";
+
 import { useState } from "react";
 
 export const PreProductionForm = () => {
@@ -9,8 +15,14 @@ export const PreProductionForm = () => {
 
   const { user } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({});
-  const { materials } = useSelector((state) => state.inventory);
+  const [created, setCreated] = useState(false);
+
+  const { materials, availability } = useSelector((state) => state.inventory);
   const { isError, isLoading, message } = useSelector((state) => state.batch);
+
+  useEffect(() => {
+    dispatch(getMaterials());
+  }, []);
 
   useEffect(() => {
     if (isError && !isLoading) {
@@ -39,10 +51,39 @@ export const PreProductionForm = () => {
           }),
         })
       );
+      setCreated(true);
+      dispatch(checkMaterialsAvailability());
     } else {
       alert("Restricted to Owner Only");
     }
   };
+
+  useEffect(() => {
+    if (created) {
+      if (availability.critical.length) {
+        dispatch(
+          createNotification({
+            title: "Material Low on Quantity",
+            message: `${availability.critical.join(
+              ", "
+            )} have low quantity, purchase more soon to replenish`,
+          })
+        );
+      }
+      if (availability.empty.length) {
+        dispatch(
+          createNotification({
+            title: "Material Empty",
+            message: `Empty quantity on ${availability.empty.join(
+              ", "
+            )}, purchase more soon to replenish`,
+          })
+        );
+      }
+
+      setCreated(false);
+    }
+  }, [availability]);
 
   return (
     <div>
@@ -51,10 +92,10 @@ export const PreProductionForm = () => {
         {materials.map((material) => {
           return (
             <div
-              className="w-full flex flex-col md:flex-row md:space-x-4 items-start md:items-center"
+              className="flex flex-col items-start w-full md:flex-row md:space-x-4 md:items-center"
               key={material.name}
             >
-              <p className="open-paragraph font-semibold w-full md:w-1/3">
+              <p className="w-full font-semibold open-paragraph md:w-1/3">
                 {material.name} ({material.unit})
               </p>
               <TextField

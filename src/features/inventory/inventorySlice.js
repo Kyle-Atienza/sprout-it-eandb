@@ -3,6 +3,10 @@ import inventoryService from "./inventoryService";
 
 const initialState = {
   materials: [],
+  availability: {
+    empty: [],
+    critical: [],
+  },
   isSuccess: false,
   isError: false,
   isLoading: false,
@@ -88,6 +92,25 @@ export const inventorySlice = createSlice({
       state.isLoading = false;
       state.message = "";
     },
+    checkMaterialsAvailability: (state) => {
+      const checkMaterials = state.materials.filter(
+        (material) => !material.isHidden
+      );
+
+      checkMaterials.forEach((material) => {
+        if (
+          material.quantity === 0 &&
+          !state.availability.empty.includes(material.name)
+        ) {
+          state.availability.empty.push(material.name);
+        } else if (
+          material.quantity < 10 &&
+          !state.availability.critical.includes(material.name)
+        ) {
+          state.availability.critical.push(material.name);
+        }
+      });
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -158,5 +181,5 @@ export const inventorySlice = createSlice({
   },
 });
 
-export const { reset } = inventorySlice.actions;
+export const { reset, checkMaterialsAvailability } = inventorySlice.actions;
 export default inventorySlice.reducer;

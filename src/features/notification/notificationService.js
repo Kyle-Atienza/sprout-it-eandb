@@ -16,6 +16,16 @@ const getNotifications = async (token) => {
   return response.data;
 };
 
+const creteNotification = async (notificationData, token) => {
+  const response = await axios.post(
+    `${API_URL}`,
+    notificationData,
+    config(token)
+  );
+
+  return response.data;
+};
+
 const deleteNotification = async (id, token) => {
   const response = await axios.delete(`${API_URL}${id}`, config(token));
 
@@ -24,6 +34,7 @@ const deleteNotification = async (id, token) => {
 
 const notificationService = {
   getNotifications,
+  creteNotification,
   deleteNotification,
 };
 
