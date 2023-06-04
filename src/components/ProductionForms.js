@@ -1,7 +1,7 @@
 import { React, useEffect } from "react";
 import { PrimaryButton, TextField } from "../components";
 import { useDispatch, useSelector } from "react-redux";
-import { createBatch } from "../features/batch/batchSlice";
+import { createBatch, doneCheckMaterials } from "../features/batch/batchSlice";
 import { createNotification } from "../features/notification/notificationSlice";
 import {
   checkMaterialsAvailability,
@@ -16,9 +16,12 @@ export const PreProductionForm = () => {
   const { user } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({});
   const [created, setCreated] = useState(false);
+  const [checkAvailability, setCheckAvailability] = useState(false);
 
   const { materials, availability } = useSelector((state) => state.inventory);
-  const { isError, isLoading, message } = useSelector((state) => state.batch);
+  const { isError, isLoading, message, checkMaterials } = useSelector(
+    (state) => state.batch
+  );
 
   useEffect(() => {
     dispatch(getMaterials());
@@ -52,14 +55,30 @@ export const PreProductionForm = () => {
         })
       );
       setCreated(true);
-      dispatch(checkMaterialsAvailability());
     } else {
       alert("Restricted to Owner Only");
     }
   };
 
   useEffect(() => {
-    if (created) {
+    if (checkMaterials) {
+      console.log("fetch materials");
+
+      dispatch(getMaterials());
+    }
+  }, [checkMaterials]);
+
+  useEffect(() => {
+    if (checkMaterials) {
+      console.log("check materials");
+      dispatch(checkMaterialsAvailability());
+      dispatch(doneCheckMaterials());
+      setCheckAvailability(true);
+    }
+  }, [materials]);
+
+  useEffect(() => {
+    if (checkAvailability) {
       if (availability.critical.length) {
         dispatch(
           createNotification({
@@ -81,9 +100,9 @@ export const PreProductionForm = () => {
         );
       }
 
-      setCreated(false);
+      setCheckAvailability(false);
     }
-  }, [availability]);
+  }, [checkAvailability]);
 
   return (
     <div>

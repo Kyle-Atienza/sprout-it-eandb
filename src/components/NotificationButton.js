@@ -45,9 +45,9 @@ export const NotificationButton = ({ className }) => {
   };
 
   return (
-    <div className='relative'>
+    <div className="relative">
       <ToastContainer
-        position='top-left'
+        position="top-left"
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}
@@ -56,7 +56,7 @@ export const NotificationButton = ({ className }) => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme='light'
+        theme="light"
       />
       <button
         className={`w-12 h-12 rounded-full   hover:bg-light-200 shadow transition-all ${className} ${
@@ -73,29 +73,34 @@ export const NotificationButton = ({ className }) => {
           notificationsState ? `flex` : `hidden`
         }`}
       >
-        <h3 className='p-5 font-bold poppins-heading-6 text-secondary-500'>Notifications</h3>
+        <h3 className="p-5 font-bold poppins-heading-6 text-secondary-500">
+          Notifications
+        </h3>
         <div>
-          {notifications.map((notification) => {
-            return (
-              <div
-                key={notification._id}
-                className='p-5 border-t-2 border-light-200 relative flex justify-between'
-              >
-                <div>
-                  <h4>{notification.title}</h4>
-                  <p>{notification.message}</p>
+          {notifications
+            .slice()
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .map((notification) => {
+              return (
+                <div
+                  key={notification._id}
+                  className="relative flex justify-between p-5 border-t-2 border-light-200"
+                >
+                  <div>
+                    <h4>{notification.title}</h4>
+                    <p>{notification.message}</p>
+                  </div>
+                  <div>
+                    <button
+                      className="flex items-center justify-center text-xl leading-none hover:text-red-500"
+                      onClick={() => onDeleteNotification(notification._id)}
+                    >
+                      <CloseOutlined />
+                    </button>
+                  </div>
                 </div>
-                <div>
-                  <button
-                    className='text-xl leading-none flex justify-center items-center hover:text-red-500'
-                    onClick={() => onDeleteNotification(notification._id)}
-                  >
-                    <CloseOutlined />
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
       </div>
     </div>

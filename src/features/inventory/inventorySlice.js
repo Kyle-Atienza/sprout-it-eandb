@@ -93,6 +93,11 @@ export const inventorySlice = createSlice({
       state.message = "";
     },
     checkMaterialsAvailability: (state) => {
+      state.availability = {
+        empty: [],
+        critical: [],
+      };
+
       const checkMaterials = state.materials.filter(
         (material) => !material.isHidden
       );

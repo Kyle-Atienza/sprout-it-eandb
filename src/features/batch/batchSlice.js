@@ -12,6 +12,7 @@ const initialState = {
     mixed: [],
     unlisted: [],
   },
+  checkMaterials: false,
   isSuccess: false,
   isError: false,
   isLoading: false,
@@ -112,6 +113,9 @@ export const batchSlice = createSlice({
       state.isError = false;
       state.isLoading = false;
       state.message = "";
+    },
+    doneCheckMaterials: (state) => {
+      state.checkMaterials = false;
     },
     loadBatchesBySubstrate: (state) => {
       state.substrate.mixed = state.active.filter((batch) => {
@@ -273,6 +277,7 @@ export const batchSlice = createSlice({
         state.batches.pre = state.batches.pre
           ? [...state.batches.pre, action.payload]
           : [action.payload];
+        state.checkMaterials = true;
       })
       .addCase(createBatch.rejected, (state, action) => {
         state.isLoading = false;
@@ -337,6 +342,11 @@ export const batchSlice = createSlice({
   },
 });
 
-export const { reset, loadBatchesBySubstrate, reloadBatches, getBatchById } =
-  batchSlice.actions;
+export const {
+  reset,
+  loadBatchesBySubstrate,
+  reloadBatches,
+  getBatchById,
+  doneCheckMaterials,
+} = batchSlice.actions;
 export default batchSlice.reducer;
