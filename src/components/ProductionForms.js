@@ -9,6 +9,7 @@ import {
 } from "../features/inventory/inventorySlice";
 
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export const PreProductionForm = () => {
   const dispatch = useDispatch();
@@ -88,6 +89,11 @@ export const PreProductionForm = () => {
             )} have low quantity, purchase more soon to replenish`,
           })
         );
+        toast(
+          `${availability.critical.join(
+            ", "
+          )} have low quantity, purchase more soon to replenish`
+        );
       }
       if (availability.empty.length) {
         dispatch(
@@ -97,6 +103,11 @@ export const PreProductionForm = () => {
               ", "
             )}, purchase more soon to replenish`,
           })
+        );
+        toast(
+          `Empty quantity on ${availability.empty.join(
+            ", "
+          )}, purchase more soon to replenish`
         );
       }
 

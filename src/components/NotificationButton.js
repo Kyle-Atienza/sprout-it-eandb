@@ -60,7 +60,7 @@ export const NotificationButton = ({ className }) => {
       />
       <button
         className={`w-12 h-12 rounded-full   hover:bg-light-200 shadow transition-all ${className} ${
-          notifications.length ? "bg-primary-400" : "bg-light-100"
+          notifications.length ? "bg-[#FD8282]" : "bg-light-100"
         }`}
         onClick={() => setNotificationsState(!notificationsState)}
       >
