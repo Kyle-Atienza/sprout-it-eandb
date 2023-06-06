@@ -17,6 +17,12 @@ import PostProductionOverview from "./post-production-overview.png";
 import MushroomProductionOverview from "./mushroom-production-overview.png";
 import OysterMushroomOverview from "./oyster-mushroom-overview.png";
 
+import Green from "./indicators/green.svg";
+import YellowGreen from "./indicators/yellowgreen.svg";
+import Yellow from "./indicators/yellow.svg";
+import Orange from "./indicators/orange.svg";
+import Red from "./indicators/red.svg";
+
 export const Images = {
   LoginRegisterBg,
   LogoIcon,
@@ -36,4 +42,10 @@ export const Images = {
   PostProductionOverview,
   MushroomProductionOverview,
   OysterMushroomOverview,
+
+  Green,
+  YellowGreen,
+  Yellow,
+  Orange,
+  Red,
 };

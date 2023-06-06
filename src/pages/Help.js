@@ -6,6 +6,8 @@ import { useEffect } from "react";
 import { getMaterials } from "../features/inventory/inventorySlice";
 import { useDispatch } from "react-redux";
 
+import { Images } from "../core";
+
 export const Help = () => {
   const dispatch = useDispatch();
 
@@ -53,15 +55,42 @@ export const Help = () => {
                           phase.
                           <br />
                           <br />
-                          Green indicates 0 days - 6 days
-                          <br />
-                          Yellow Green indicates 7 days - 13 days
-                          <br />
-                          Yellow indicates 14 days - 20 days
-                          <br />
-                          Orange 21 days - 27 days <br />
-                          Red 28 days and so on
-                          <br />
+                          <div className="flex items-center gap-2">
+                            <img
+                              src={Images.Green}
+                              alt=""
+                              className="h-[1em]"
+                            />
+                            <p>Green indicates 0 days - 6 days</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <img
+                              src={Images.YellowGreen}
+                              alt=""
+                              className="h-[1em]"
+                            />
+                            <p>Yellow Green indicates 7 days - 13 days</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <img
+                              src={Images.Yellow}
+                              alt=""
+                              className="h-[1em]"
+                            />
+                            <p>Yellow indicates 14 days - 20 days</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <img
+                              src={Images.Orange}
+                              alt=""
+                              className="h-[1em]"
+                            />
+                            <p>Orange 21 days - 27 days </p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <img src={Images.Red} alt="" className="h-[1em]" />
+                            <p>Red 28 days and so on</p>
+                          </div>
                         </Disclosure.Panel>
                       </>
                     )}
